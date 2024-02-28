@@ -1,14 +1,14 @@
 import "./App.css";
-import { Footer } from "./components/footer";
+import Footer from "./components/footer";
 import Header from "./components/header";
-import { ImageGenerator } from "./components/imageGenerator";
+import ImageGenerator from "./components/imageGenerator";
 import QuoteGenerator from "./components/quoteGenerator";
 function App() {
-  const image = ImageGenerator();
   return (
-    <div className="body" style={{ backgroundImage: `url(${image})` }}>
+    <div className="body">
       <Header />
       <QuoteGenerator />
+      <ImageGenerator />
       <Footer />
     </div>
   );

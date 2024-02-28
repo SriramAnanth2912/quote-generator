@@ -1,48 +1,45 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
 
 const ImageGenerator = () => {
-  const [image, setImage] = useState("");
-  const data = "https://api-ninjas.com";
+  const [image, setImage] = useState(null);
   const category = "nature";
-  const url = `${data}/v1/randomimage?category=${category}`;
+  const url = `https://api.api-ninjas.com/v1/randomimage?category=${category}`;
   const options = {
     method: "GET",
     headers: {
-      "X-Api-key": "pDLaXJyuV2IjCaQx0TdZnQ==UVbe8LqR7nyg6JbE",
+      "X-Api-Key": "F4UznSTbkEj02WvVYlOEyTN8HeUlStiOkTroEgK8",
       Accept: "image/jpeg",
     },
   };
-  //   const requestImage = async () => {
-  //     try {
-  //       const response = await fetch(url, options);
-  //       if (response.status === 200) {
-  //         const imagejson = await response.json();
-  //         const imageUrl = imagejson[0]?.url;
-  //         setImage(imageUrl);
-  //         console.log(imagejson);
-  //       } else {
-  //         console.error("failed to fetch image");
-  //       }
-  //     } catch (e) {
-  //       console.error("Error fetching image: " + e.message);
-  //     }
-  //   };
+
   useEffect(() => {
-    // requestImage();
-    setImage(``);
+    const requestImage = async (url, options) => {
+      try {
+        const response = await fetch(url, options);
+        if (response.status === 200) {
+          const responseBlob = await response.blob();
+          const imageUrl = URL.createObjectURL(responseBlob);
+          setImage(imageUrl);
+        } else if (response.status === 429) {
+          const delay = Math.pow(2, 4) * 1000;
+          await new Promise((resolve) => setTimeout(resolve, delay));
+          await requestImage(url);
+        } else {
+          console.error("Failed to fetch image");
+        }
+      } catch (error) {
+        console.error("Error fetching image: " + error.code);
+      }
+    };
+    requestImage(url, options);
   }, []);
 
-  return image;
-  //   return (
-  //     <div className="bg-image-container">
-  //       {image && (
-  //         <>
-  //           <img alt="a nice nature view" src={image} className="image"></img>
-  //           <div className="image-caption">A nice image</div>
-  //         </>
-  //       )}
-  //     </div>
-  //   );
+  return (
+    <div className="image-container">
+      {image && <img alt="a nice nature view" src={image} className="image" />}
+    </div>
+  );
 };
 
-export { ImageGenerator };
+export default ImageGenerator;
