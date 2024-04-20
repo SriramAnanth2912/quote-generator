@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
-
+// issues with API key and status code 400
 const QuoteGenerator = () => {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
@@ -9,12 +9,14 @@ const QuoteGenerator = () => {
   const options = {
     method: "GET",
     headers: {
-      "X-Api-Key": "F4UznSTbkEj02WvVYlOEyTN8HeUlStiOkTroEgK8",
+      "X-Api-Key": `${process.env.REACT_APP_API_KEY_QUOTE}`,
       Accept: "application/json",
     },
   };
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_API_KEY_QUOTE);
+    console.log(process.env.REACT_APP_API_KEY_IMAGE);
     const requestQuote = async (url, options) => {
       try {
         const response = await fetch(url, options);

@@ -5,7 +5,11 @@ const Footer = () => {
   const year = date.getFullYear();
   return (
     <div className="footer">
-      <div className="footer-title">Copyright &copy; {year} - L.Sriram Ananth</div>
+      {" "}
+      <hr></hr>
+      <div>
+        <div className="footer-title">Copyright &copy; {year} - L.Sriram Ananth</div>
+      </div>
     </div>
   );
 };

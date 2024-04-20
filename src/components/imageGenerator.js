@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-
+// issues with API key and status code 400
 const ImageGenerator = () => {
   const [image, setImage] = useState(null);
   const category = "nature";
@@ -8,7 +8,7 @@ const ImageGenerator = () => {
   const options = {
     method: "GET",
     headers: {
-      "X-Api-Key": "F4UznSTbkEj02WvVYlOEyTN8HeUlStiOkTroEgK8",
+      "X-Api-Key": process.env.REACT_APP_API_KEY_QUOTE,
       Accept: "image/jpeg",
     },
   };
