@@ -41,7 +41,7 @@ const ImageGenerator = () => {
 
   return (
     <div className="image-container">
-      {image && <img alt="a nice nature view" src={image} className="image" />}
+      {image && <img alt="a nice nature view" title="nature" src={image} className="image" />}
     </div>
   );
 };

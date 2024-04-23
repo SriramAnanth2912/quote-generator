@@ -25,13 +25,10 @@ const QuoteGenerator = () => {
         if (response.status === 200) {
           const result = await response.json();
           console.log(result);
-          setQuote(result[0].quote);
+          let Quote = result[0].quote;
           setAuthor(result[0].author);
-          // } else if (response.status === 429) {
-          //   const delay = Math.pow(2, 4) * 1000;
-          //   await new Promise((resolve) => setTimeout(resolve, delay));
-          //   await requestQuote(url, options); // Retry with both url and options
-          //
+          let slicedQuote = Quote.length > 90 ? Quote.slice(0, Quote.indexOf(".") + 1) : Quote;
+          setQuote(slicedQuote);
         } else {
           console.error("Error fetching the quote: " + response.status);
         }
@@ -45,8 +42,10 @@ const QuoteGenerator = () => {
 
   return (
     <div className="quote-container">
-      <div className="quote">{quote}</div>
-      <div className="author"> {author}</div>
+      <div className="quote" title={`quote by ${author}`}>
+        {quote}
+      </div>
+      <div className="author"> -{author}</div>
     </div>
   );
 };

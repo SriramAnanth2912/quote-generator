@@ -7,8 +7,10 @@ function App() {
   return (
     <>
       <Header />
-      <QuoteGenerator />
-      <ImageGenerator />
+      <div className="container">
+        <ImageGenerator />
+        <QuoteGenerator />
+      </div>
       <Footer />
     </>
   );
