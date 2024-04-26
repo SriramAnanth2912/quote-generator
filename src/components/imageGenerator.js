@@ -1,47 +1,43 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from "react";
-// multiple re-render calls
-// modify the styles and make sure they render only one time; try to use the custom hook created
+import useFetchImage from "../Hooks/useFetchImage";
 const ImageGenerator = () => {
-  const [image, setImage] = useState(null);
+  const [imageData, setImageData] = useState({
+    image: null,
+    errorMessage: "",
+  });
   const category = "nature";
 
   useEffect(() => {
-    const apiKey = process.env.REACT_APP_API_KEY_QUOTE;
-    const url = `https://api.api-ninjas.com/v1/randomimage?category=${category}`;
-    const options = {
-      method: "GET",
-      headers: {
-        "X-Api-Key": apiKey,
-        Accept: "image/jpeg",
-      },
-    };
-    console.log("API Key: " + process.env.REACT_APP_API_KEY_QUOTE);
-    const requestImage = async (url, options) => {
+    const FetchData = async () => {
+      const apiKey = process.env.REACT_APP_API_KEY_QUOTE;
+      const url = `https://api.api-ninjas.com/v1/randomimage?category=${category}`;
+      const options = {
+        method: "GET",
+        headers: {
+          "X-Api-Key": apiKey,
+          Accept: "image/jpeg",
+        },
+      };
       try {
-        const response = await fetch(url, options);
-        if (response.status === 200) {
-          const responseBlob = await response.blob();
-          const imageUrl = URL.createObjectURL(responseBlob);
-          setImage(imageUrl);
-          // }
-          // else if (response.status === 429) {
-          //   const delay = Math.pow(2, 4) * 1000;
-          //   await new Promise((resolve) => setTimeout(resolve, delay));
-          //   await requestImage(url);
-        } else {
-          console.error("Failed to fetch image");
-        }
+        const response = await useFetchImage(url, options);
+        // console.log("response-image: " + response);
+        setImageData(response);
       } catch (error) {
-        console.error("Error fetching image: " + error.code);
+        setImageData((prevData) => ({
+          ...prevData,
+          errorMessage: "Error fetching image: " + error.message,
+        }));
       }
     };
-    requestImage(url, options);
+    FetchData();
   }, []);
 
   return (
     <div className="image-container">
-      {image && <img alt="a nice nature view" title="nature" src={image} className="image" />}
+      {imageData.image && (
+        <img alt="a nice nature view" title="nature" src={imageData.image} className="image" />
+      )}
     </div>
   );
 };
